@@ -16,7 +16,6 @@ public class ValidationDetailsUtils {
         problemDetail.setTitle("Field Validation Exception");
         problemDetail.setType(URI.create("field-validation-error"));
         problemDetail.setProperty("invalids Params", validationErrors);
-
         return problemDetail;
     }
 }

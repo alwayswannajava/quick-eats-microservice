@@ -8,7 +8,7 @@ import com.userservice.dto.response.UpdateUserResponseDto;
 import java.util.UUID;
 
 public interface UserService {
-    void create(CreateUserRequestDto createUserRequestDto);
+    void create(User user);
 
     User fetchUser(UUID userId);
 
