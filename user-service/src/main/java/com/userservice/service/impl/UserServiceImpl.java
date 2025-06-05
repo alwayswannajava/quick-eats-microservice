@@ -26,14 +26,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void create(CreateUserRequestDto createUserRequestDto) {
-        log.info("Creating a new user: {}", createUserRequestDto);
+    public void create(User user) {
+        log.info("Creating a new user: {}", user);
         try {
-            log.info("Mapping CreateUserRequestDto to User entity");
-            User newUser = userMapper.toUser(createUserRequestDto);
-            log.info("After mapping, User entity: {}", newUser);
-            userRepository.save(newUser);
-            log.info("User created successfully with ID: {}", newUser.getUserId());
+            userRepository.save(user);
+            log.info("User created successfully with ID: {}", user.getUserId());
         } catch (Exception e) {
             log.error("Error creating user: {}", e.getMessage());
             throw new PersistenceException("Error creating user: " + e.getMessage());
@@ -51,14 +48,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User update(UUID userId, UpdateUserRequestDto updateUserRequestDto) {
+    public User update(UUID userId, User user) {
         log.info("Updating user with ID: {}", userId);
         try {
             User updatedUser = userRepository.findById(userId)
                     .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
             log.info("Existing user before update: {}", updatedUser);
-            userMapper.toUser(updateUserRequestDto, updatedUser);
-            userRepository.save(updatedUser);
+            userRepository.save(user);
             log.info("User updated successfully: {}", updatedUser);
             return updatedUser;
         } catch (Exception e) {
