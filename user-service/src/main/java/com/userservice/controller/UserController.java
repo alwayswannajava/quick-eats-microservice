@@ -40,7 +40,7 @@ public class UserController {
     public ResponseEntity<Void> createUser(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
         log.info("------------------------POST REQUEST------------------------");
         log.info("Creating a new user: {}", createUserRequestDto);
-        userService.create(createUserRequestDto);
+        userService.create(userMapper.toUser(createUserRequestDto));
         return ResponseEntity.ok().build();
     }
 
