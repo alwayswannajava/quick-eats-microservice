@@ -32,7 +32,7 @@ public class UserController {
     @PostMapping("/new")
     public ResponseEntity<String> createUser(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
         log.info("------------------------POST REQUEST------------------------");
-        log.info("Controller level. Creating a new user: {}", createUserRequestDto);
+        log.info("Creating a new user: {}", createUserRequestDto);
         userService.create(createUserRequestDto);
         return ResponseEntity.ok().build();
     }
@@ -42,21 +42,21 @@ public class UserController {
                                                                 @Valid UpdateUserRequestDto
                                                                         updateUserRequestDto) {
         log.info("------------------------POST REQUEST------------------------");
-        log.info("Controller level. Updating user: {}", updateUserRequestDto);
+        log.info("Updating user: {}", updateUserRequestDto);
         return null;
     }
 
     @GetMapping("/fetch/{userId}")
     public ResponseEntity<UpdateUserResponseDto> fetchUser(@PathVariable String userId) {
         log.info("------------------------GET REQUEST------------------------");
-        log.info("Controller level. Fetching user with ID: {}", userId);
+        log.info("Fetching user with ID: {}", userId);
         return null;
     }
 
     @DeleteMapping("/delete/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable String userId) {
         log.info("------------------------DELETE REQUEST------------------------");
-        log.info("Controller level. Deleting user with ID: {}", userId);
+        log.info("Deleting user with ID: {}", userId);
         userService.delete(userId);
         return ResponseEntity.noContent().build();
     }
