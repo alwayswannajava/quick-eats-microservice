@@ -12,7 +12,7 @@ import org.mapstruct.MappingTarget;
 public interface UserMapper {
     User toUser(CreateUserRequestDto createUserRequestDto);
 
-    User toUser(UpdateUserRequestDto updateUserRequestDto, @MappingTarget User user);
+    User toUser(UpdateUserRequestDto updateUserRequestDto);
 
     FetchUserResponseDto toFetchUserResponseDto(User user);
 

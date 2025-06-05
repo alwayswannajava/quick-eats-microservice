@@ -1,5 +1,6 @@
 package com.userservice.controller;
 
+import com.userservice.domain.User;
 import com.userservice.service.mapper.UserMapper;
 import com.userservice.dto.request.CreateUserRequestDto;
 import com.userservice.dto.request.UpdateUserRequestDto;
@@ -51,8 +52,9 @@ public class UserController {
                                                                     updateUserRequestDto) {
         log.info("------------------------POST REQUEST------------------------");
         log.info("Updating user: {}", updateUserRequestDto);
-        return ResponseEntity.ok(userMapper.toUpdateUserResponseDto(
-                userService.update(userId, updateUserRequestDto)));
+        return ResponseEntity.ok(
+                userMapper.toUpdateUserResponseDto(
+                        userService.update(userId, userMapper.toUser(updateUserRequestDto))));
     }
 
     @GetMapping("/fetch/{userId}")
