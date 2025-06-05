@@ -51,12 +51,12 @@ public class UserServiceImpl implements UserService {
     public User update(UUID userId, User user) {
         log.info("Updating user with ID: {}", userId);
         try {
-            User updatedUser = userRepository.findById(userId)
+            userRepository.findById(userId)
                     .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
-            log.info("Existing user before update: {}", updatedUser);
+            log.info("Existing user before update: {}", user);
             userRepository.save(user);
-            log.info("User updated successfully: {}", updatedUser);
-            return updatedUser;
+            log.info("User updated successfully: {}", user);
+            return user;
         } catch (Exception e) {
             log.error("Error updating user: {}", e.getMessage());
             throw new PersistenceException("Error updating user: " + e.getMessage());
@@ -68,5 +68,6 @@ public class UserServiceImpl implements UserService {
     public void delete(UUID userId) {
         log.info("Deleting user with ID: {}", userId);
         userRepository.deleteById(userId);
+        log.info("User with ID: {} deleted successfully", userId);
     }
 }
