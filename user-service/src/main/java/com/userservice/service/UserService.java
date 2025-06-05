@@ -1,15 +1,17 @@
 package com.userservice.service;
 
+import com.userservice.domain.User;
 import com.userservice.dto.request.CreateUserRequestDto;
 import com.userservice.dto.request.FetchUserRequestDto;
 import com.userservice.dto.response.UpdateUserResponseDto;
+import java.util.UUID;
 
 public interface UserService {
     void create(CreateUserRequestDto createUserRequestDto);
 
-    FetchUserRequestDto fetchUser(String userId);
+    User fetchUser(UUID userId);
 
-    UpdateUserResponseDto update(String userId);
+    User update(UUID userId);
 
-    void delete(String userId);
+    void delete(UUID userId);
 }
