@@ -12,7 +12,7 @@ public interface UserService {
 
     User fetchUser(UUID userId);
 
-    User update(UUID userId, UpdateUserRequestDto updateUserRequestDto);
+    User update(UUID userId, User user);
 
     void delete(UUID userId);
 }
