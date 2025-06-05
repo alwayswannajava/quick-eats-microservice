@@ -1,5 +1,7 @@
 package com.userservice.service.impl;
 
+import com.userservice.dto.request.UpdateUserRequestDto;
+import com.userservice.service.exception.UserNotFoundException;
 import com.userservice.service.mapper.UserMapper;
 import com.userservice.domain.User;
 import com.userservice.dto.request.CreateUserRequestDto;
@@ -42,19 +44,33 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public User fetchUser(UUID userId) {
         log.info("Fetching user with ID: {}", userId);
-        return null;
+        return userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new UserNotFoundException("User not found with ID: " + userId));
     }
 
     @Override
     @Transactional
-    public User update(UUID userId) {
+    public User update(UUID userId, UpdateUserRequestDto updateUserRequestDto) {
         log.info("Updating user with ID: {}", userId);
-        return null;
+        try {
+            User updatedUser = userRepository.findById(userId)
+                    .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
+            log.info("Existing user before update: {}", updatedUser);
+            userMapper.toUser(updateUserRequestDto, updatedUser);
+            userRepository.save(updatedUser);
+            log.info("User updated successfully: {}", updatedUser);
+            return updatedUser;
+        } catch (Exception e) {
+            log.error("Error updating user: {}", e.getMessage());
+            throw new PersistenceException("Error updating user: " + e.getMessage());
+        }
     }
 
     @Override
     @Transactional
     public void delete(UUID userId) {
         log.info("Deleting user with ID: {}", userId);
+        userRepository.deleteById(userId);
     }
 }
