@@ -43,10 +43,3 @@ jobs:
         with:
           cache-disabled: true
           generate-job-summary: false
-
-      # Upload the JaCoCo test coverage report
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-coverage-report
-          path: build/reports/coverage/index.html
