@@ -1,3 +1,0 @@
-databaseChangeLog:
-  - include:
-      file: db/changelog/migration/V1__create_users_table.yaml

@@ -1,68 +1,70 @@
 package com.userservice.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import java.math.BigDecimal;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
-@Entity
-@Table(name = "users")
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
+@AllArgsConstructor
+@Builder
+@Document(collection = "users")
 public class User extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID userId;
 
-    @Column(nullable = false, unique = true)
+    @Id
+    private String userId;
+
+    @Indexed(unique = true)
     private String email;
 
-    @Column(unique = true)
-    private String phoneNumber;
+    @Indexed(unique = true)
+    private String phone;
 
-    @Column(nullable = false)
+    @Field(name = "password_hash")
     private String passwordHash;
 
-    @Column(nullable = false, length = 100)
+    @Field(name = "first_name")
     private String firstName;
 
-    @Column(nullable = false, length = 100)
+    @Field(name = "last_name")
     private String lastName;
 
-    @Column(nullable = false)
-    private LocalDateTime dateOfBirth;
+    @Field(name = "date_of_birth")
+    private LocalDate dateOfBirth;
 
-    @Column(length = 500)
-    private String profilePictureUrl;
+    @Field(name = "profile_image")
+    private String profileImage;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Role role;
 
-    @Column
-    private Boolean isActive = true;
+    private UserStatus status;
 
-    private BigDecimal rating;
+    @Field(name = "email_verified")
+    private Boolean emailVerified;
+
+    @Field(name = "phone_verified")
+    private Boolean phoneVerified;
+
+    @Field(name = "last_login")
+    private LocalDateTime lastLogin;
 
     public enum Role {
-        DELIVERY_PERSON,
-        ADMIN,
+        CUSTOMER,
         RESTAURANT_OWNER,
-        DRIVER;
+        COURIER,
+        ADMIN
+    }
+
+    public enum UserStatus {
+        ACTIVE,
+        INACTIVE,
+        BANNED
     }
 }
