@@ -1,15 +1,12 @@
 package com.userservice.service.impl;
 
-import com.userservice.dto.request.UpdateUserRequestDto;
 import com.userservice.service.exception.UserNotFoundException;
-import com.userservice.service.mapper.UserMapper;
+import com.userservice.controller.mapper.UserMapper;
 import com.userservice.domain.User;
-import com.userservice.dto.request.CreateUserRequestDto;
 import com.userservice.repository.UserRepository;
 import com.userservice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 
 @Slf4j
@@ -17,7 +14,7 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -26,7 +23,7 @@ public class UserServiceImpl implements UserService {
         log.info("Creating a new user: {}", user);
         try {
             userRepository.save(user);
-            log.info("User created successfully with ID: {}", user.getUserId());
+            log.info("User created successfully with email: {}", user.getEmail());
         } catch (Exception e) {
             log.error("Error creating user: {}", e.getMessage());
         }

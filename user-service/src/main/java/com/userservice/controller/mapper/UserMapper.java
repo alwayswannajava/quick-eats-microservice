@@ -1,4 +1,4 @@
-package com.userservice.service.mapper;
+package com.userservice.controller.mapper;
 
 import com.userservice.config.MapperConfig;
 import com.userservice.domain.User;
@@ -9,7 +9,7 @@ import com.userservice.dto.response.UpdateUserResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring")
+@Mapper(config = MapperConfig.class, componentModel = "spring")
 public interface UserMapper {
     User toUser(CreateUserRequestDto createUserRequestDto);
 
