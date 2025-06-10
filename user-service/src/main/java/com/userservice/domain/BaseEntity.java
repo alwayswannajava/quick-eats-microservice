@@ -1,40 +1,36 @@
 package com.userservice.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.mapping.Field;
 import java.time.LocalDateTime;
 
-@MappedSuperclass
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-public class BaseEntity {
+public abstract class BaseEntity {
 
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
+    @CreatedDate
+    @Field(name = "created_at")
+    protected LocalDateTime createdAt;
 
     @CreatedBy
-    @Column(updatable = false)
-    private String createdBy;
+    @Field(name = "created_by")
+    protected String createdBy;
 
-    @UpdateTimestamp
-    @Column(insertable = false)
-    private LocalDateTime updatedAt;
+    @LastModifiedDate
+    @Field(name = "updated_at")
+    protected LocalDateTime updatedAt;
 
     @LastModifiedBy
-    @Column(insertable = false)
-    private String updatedBy;
+    @Field(name = "updated_by")
+    protected String updatedBy;
 
 }

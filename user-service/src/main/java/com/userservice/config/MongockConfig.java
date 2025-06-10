@@ -1,7 +1,9 @@
 package com.userservice.config;
 
+import io.mongock.runner.springboot.EnableMongock;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class SecurityConfig {
+@EnableMongock
+public class MongockConfig {
 }

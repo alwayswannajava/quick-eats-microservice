@@ -1,6 +1,6 @@
 package com.userservice.controller;
 
-import com.userservice.dto.response.CreateUserResponseDto;
+import com.userservice.domain.User;
 import com.userservice.service.mapper.UserMapper;
 import com.userservice.dto.request.CreateUserRequestDto;
 import com.userservice.dto.request.UpdateUserRequestDto;
@@ -41,7 +41,7 @@ public class UserController {
     public ResponseEntity<Void> createUser(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
         log.info("------------------------POST REQUEST------------------------");
         log.info("Creating a new user: {}", createUserRequestDto);
-        userService.create(createUserRequestDto);
+        userService.create(userMapper.toUser(createUserRequestDto));
         return ResponseEntity.ok().build();
     }
 
@@ -52,7 +52,9 @@ public class UserController {
                                                                     updateUserRequestDto) {
         log.info("------------------------POST REQUEST------------------------");
         log.info("Updating user: {}", updateUserRequestDto);
-        return null;
+        return ResponseEntity.ok(
+                userMapper.toUpdateUserResponseDto(
+                        userService.update(userId, userMapper.toUser(updateUserRequestDto))));
     }
 
     @GetMapping("/fetch/{userId}")
