@@ -1,4 +1,4 @@
-package com.userservice.db.migration;
+package com.userservice.migration;
 
 import io.mongock.api.annotations.ChangeUnit;
 import io.mongock.api.annotations.Execution;

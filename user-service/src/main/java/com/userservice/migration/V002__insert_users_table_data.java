@@ -1,4 +1,4 @@
-package com.userservice.db.migration;
+package com.userservice.migration;
 
 import com.userservice.domain.User;
 import io.mongock.api.annotations.ChangeUnit;
