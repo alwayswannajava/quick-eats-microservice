@@ -1,7 +1,6 @@
 package com.userservice.controller;
 
-import com.userservice.domain.User;
-import com.userservice.service.mapper.UserMapper;
+import com.userservice.controller.mapper.UserMapper;
 import com.userservice.dto.request.CreateUserRequestDto;
 import com.userservice.dto.request.UpdateUserRequestDto;
 import com.userservice.dto.response.FetchUserResponseDto;

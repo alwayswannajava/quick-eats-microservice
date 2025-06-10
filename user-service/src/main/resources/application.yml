@@ -6,6 +6,6 @@ mongock:
 spring:
   data:
     mongodb:
-      uri: ${MONGODB_URI}
-      password: ${MONGODB_PASSWORD}
+      uri: mongodb+srv://mongodbuser:yUBfv7eLbiGoJKVP@cluster0.bgoy1vx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      password: yUBfv7eLbiGoJKVP
       database: users
