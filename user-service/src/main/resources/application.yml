@@ -1,11 +1,11 @@
 server:
   port: 8081
 mongock:
-  migration-scan-package: com.userservice.migration
+  migration-scan-package: com.user.service.migration
   enabled: true
 spring:
   data:
     mongodb:
-      uri: mongodb+srv://mongodbuser:yUBfv7eLbiGoJKVP@cluster0.bgoy1vx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-      password: yUBfv7eLbiGoJKVP
+      uri: ${MONGODB_URI}
+      password: ${MONGODB_PASSWORD}
       database: users
