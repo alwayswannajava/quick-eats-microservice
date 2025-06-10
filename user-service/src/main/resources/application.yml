@@ -1,7 +1,7 @@
 server:
   port: 8081
 mongock:
-  migration-scan-package: com.user.service.migration
+  migration-scan-package: com.userservice.migration
   enabled: true
 spring:
   data:
