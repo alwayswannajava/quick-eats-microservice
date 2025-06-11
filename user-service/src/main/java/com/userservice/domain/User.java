@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
