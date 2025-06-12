@@ -8,7 +8,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -17,13 +21,13 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Document(collection = "users")
-public class User extends BaseEntity {
+public class User {
 
     @Id
     private String userId;
@@ -61,6 +65,22 @@ public class User extends BaseEntity {
 
     @Field(name = "last_login")
     private LocalDateTime lastLogin;
+
+    @CreatedDate
+    @Field(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @CreatedBy
+    @Field(name = "created_by")
+    private String createdBy;
+
+    @LastModifiedDate
+    @Field(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @LastModifiedBy
+    @Field(name = "updated_by")
+    private String updatedBy;
 
     public enum Role {
         CUSTOMER,
