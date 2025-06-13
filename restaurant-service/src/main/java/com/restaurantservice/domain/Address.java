@@ -6,8 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.Field;
-import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -25,16 +26,7 @@ public class Address {
     @Field("postal_code")
     private String postalCode;
 
+    @GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
     private Coordinates coordinates;
 
-    @Getter
-    @Setter
-    @EqualsAndHashCode
-    @ToString
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static final class Coordinates {
-        private BigDecimal latitude;
-        private BigDecimal longitude;
-    }
 }
