@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @PutMapping("/update/{userId}")
-    public ResponseEntity<UpdateUserResponseDto> updateUser(@PathVariable UUID userId,
+    public ResponseEntity<UpdateUserResponseDto> updateUser(@PathVariable String userId,
                                                             @RequestBody
                                                             @Valid UpdateUserRequestDto
                                                                     updateUserRequestDto) {
@@ -57,14 +57,14 @@ public class UserController {
     }
 
     @GetMapping("/fetch/{userId}")
-    public ResponseEntity<FetchUserResponseDto> fetchUser(@PathVariable UUID userId) {
+    public ResponseEntity<FetchUserResponseDto> fetchUser(@PathVariable String userId) {
         log.info("------------------------GET REQUEST------------------------");
         log.info("Fetching user with ID: {}", userId);
         return ResponseEntity.ok(userMapper.toFetchUserResponseDto(userService.fetchUser(userId)));
     }
 
     @DeleteMapping("/delete/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable UUID userId) {
+    public ResponseEntity<Void> deleteUser(@PathVariable String userId) {
         log.info("------------------------DELETE REQUEST------------------------");
         log.info("Deleting user with ID: {}", userId);
         userService.delete(userId);

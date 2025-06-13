@@ -10,9 +10,9 @@ import java.util.UUID;
 public interface UserService {
     void create(User user);
 
-    User fetchUser(UUID userId);
+    User fetchUser(String userId);
 
-    User update(UUID userId, User user);
+    User update(String userId, User user);
 
-    void delete(UUID userId);
+    void delete(String userId);
 }
