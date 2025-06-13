@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User fetchUser(UUID userId) {
+    public User fetchUser(String userId) {
         log.info("Fetching user with ID: {}", userId);
         return userRepository.findById(userId)
                 .orElseThrow(() ->
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User update(UUID userId, User user) {
+    public User update(String userId, User user) {
         log.info("Updating user with ID: {}", userId);
         try {
             userRepository.findById(userId)
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(UUID userId) {
+    public void delete(String userId) {
         log.info("Deleting user with ID: {}", userId);
         userRepository.deleteById(userId);
         log.info("User with ID: {} deleted successfully", userId);
