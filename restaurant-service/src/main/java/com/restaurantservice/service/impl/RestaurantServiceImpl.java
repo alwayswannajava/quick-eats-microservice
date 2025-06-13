@@ -80,12 +80,12 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public List<Restaurant> getRestaurantsByCategory(String category) {
+    public List<Restaurant> fetchRestaurantsByCategory(String category) {
         return List.of();
     }
 
     @Override
-    public List<Restaurant> getOpenRestaurants() {
+    public List<Restaurant> fetchOpenRestaurants() {
         return List.of();
     }
 

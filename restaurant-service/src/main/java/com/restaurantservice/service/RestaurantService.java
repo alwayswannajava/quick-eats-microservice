@@ -24,9 +24,9 @@ public interface RestaurantService {
 
     List<Restaurant> searchRestaurants(String query, RestaurantFilter filter);
 
-    List<Restaurant> getRestaurantsByCategory(String category);
+    List<Restaurant> fetchRestaurantsByCategory(String category);
 
-    List<Restaurant> getOpenRestaurants();
+    List<Restaurant> fetchOpenRestaurants();
 
     boolean isRestaurantOpen(String restaurantId);
 
