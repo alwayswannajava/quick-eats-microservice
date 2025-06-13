@@ -8,10 +8,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -71,4 +76,20 @@ public class Restaurant {
 
     @Field("is_featured")
     private Boolean isFeatured;
+
+    @Field("created_by")
+    @CreatedBy
+    private String createdBy;
+
+    @Field("created_at")
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @Field("updated_by")
+    @LastModifiedBy
+    private String updatedBy;
+
+    @Field("updated_at")
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 }

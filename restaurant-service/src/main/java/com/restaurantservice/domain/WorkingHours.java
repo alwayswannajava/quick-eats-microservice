@@ -31,7 +31,7 @@ public class WorkingHours {
     @ToString
     @NoArgsConstructor
     @AllArgsConstructor
-    public static final class DaySchedule {
+    public static class DaySchedule {
         private LocalTime open;
         private LocalTime close;
 
