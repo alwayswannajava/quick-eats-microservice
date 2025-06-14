@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Slf4j
@@ -80,42 +81,76 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public List<Restaurant> fetchRestaurantsByCategory(String category) {
-        return List.of();
-    }
-
-    @Override
     public List<Restaurant> fetchOpenRestaurants() {
-        return List.of();
+        log.info("Fetching open restaurants");
+        return restaurantRepository.findAll().stream()
+                .filter(restaurant -> restaurant.getStatus() == RestaurantStatus.ACTIVE)
+                .toList();
     }
 
     @Override
     public boolean isRestaurantOpen(String restaurantId) {
-        return false;
+        log.info("Checking if restaurant with id: {} is open", restaurantId);
+        return restaurantRepository.findById(restaurantId)
+                .map(restaurant -> restaurant.getStatus() == RestaurantStatus.ACTIVE)
+                .orElseThrow(() -> new RestaurantNotFoundException("Restaurant not found with id: " + restaurantId));
     }
 
     @Override
-    public boolean isRestaurantOpenAt(String restaurantId, LocalDateTime dateTime) {
-        return false;
+    public boolean isRestaurantOpenAt(String restaurantId, LocalTime time) {
+        log.info("Checking if restaurant with id: {} is open at time: {}", restaurantId, time);
+        return restaurantRepository.findById(restaurantId)
+                .map(restaurant -> {
+                    WorkingHours workingHours = restaurant.getWorkingHours();
+                    if (workingHours == null) {
+                        return false;
+                    }
+                    return workingHours.getFriday().isOpenAt(time);
+                })
+                .orElseThrow(() -> new RestaurantNotFoundException("Restaurant not found with id: " + restaurantId));
     }
 
     @Override
     public Restaurant updateWorkingHours(String id, WorkingHours workingHours) {
-        return null;
+    log.info("Updating working hours for restaurant with id: {}", id);
+        return restaurantRepository.findById(id)
+                .map(restaurant -> {
+                    restaurant.setWorkingHours(workingHours);
+                    return restaurantRepository.save(restaurant);
+                })
+                .orElseThrow(() -> new RestaurantNotFoundException("Restaurant not found with id: " + id));
     }
 
     @Override
     public Restaurant activateRestaurant(String id) {
-        return null;
+        log.info("Activating restaurant with id: {}", id);
+        return restaurantRepository.findById(id)
+                .map(restaurant -> {
+                    restaurant.setStatus(RestaurantStatus.ACTIVE);
+                    return restaurantRepository.save(restaurant);
+                })
+                .orElseThrow(() -> new RestaurantNotFoundException("Restaurant not found with id: " + id));
     }
 
     @Override
     public Restaurant deactivateRestaurant(String id) {
-        return null;
+        log.info("Deactivating restaurant with id: {}", id);
+        return restaurantRepository.findById(id)
+                .map(restaurant -> {
+                    restaurant.setStatus(RestaurantStatus.INACTIVE);
+                    return restaurantRepository.save(restaurant);
+                })
+                .orElseThrow(() -> new RestaurantNotFoundException("Restaurant not found with id: " + id));
     }
 
     @Override
     public Restaurant updateRestaurantStatus(String id, RestaurantStatus status) {
-        return null;
+    log.info("Updating status for restaurant with id: {} to {}", id, status);
+        return restaurantRepository.findById(id)
+                .map(restaurant -> {
+                    restaurant.setStatus(status);
+                    return restaurantRepository.save(restaurant);
+                })
+                .orElseThrow(() -> new RestaurantNotFoundException("Restaurant not found with id: " + id));
     }
 }

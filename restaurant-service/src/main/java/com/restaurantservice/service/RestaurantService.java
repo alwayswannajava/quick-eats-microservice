@@ -7,6 +7,7 @@ import com.restaurantservice.dto.request.RestaurantFilter;
 import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public interface RestaurantService {
@@ -24,13 +25,11 @@ public interface RestaurantService {
 
     List<Restaurant> searchRestaurants(String query, RestaurantFilter filter);
 
-    List<Restaurant> fetchRestaurantsByCategory(String category);
-
     List<Restaurant> fetchOpenRestaurants();
 
     boolean isRestaurantOpen(String restaurantId);
 
-    boolean isRestaurantOpenAt(String restaurantId, LocalDateTime dateTime);
+    boolean isRestaurantOpenAt(String restaurantId, LocalTime time);
 
     Restaurant updateWorkingHours(String id, WorkingHours workingHours);
 

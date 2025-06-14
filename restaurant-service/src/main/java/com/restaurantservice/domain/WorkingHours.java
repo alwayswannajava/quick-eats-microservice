@@ -37,5 +37,9 @@ public class WorkingHours {
 
         @Field("is_closed")
         private Boolean isClosed;
+
+        public boolean isOpenAt(LocalTime time) {
+            return time.isAfter(open) && time.isBefore(close);
+        }
     }
 }
