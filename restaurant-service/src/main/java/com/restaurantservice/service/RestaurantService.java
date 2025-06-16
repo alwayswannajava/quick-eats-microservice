@@ -5,6 +5,9 @@ import com.restaurantservice.domain.Restaurant;
 import com.restaurantservice.domain.WorkingHours;
 import com.restaurantservice.dto.request.RestaurantFilter;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Point;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -20,6 +23,8 @@ public interface RestaurantService {
     Restaurant update(String id, Restaurant restaurant);
 
     void delete(String id);
+
+    List<Restaurant> findByLocation(Point point, Distance distance);
 
     List<Restaurant> findNearbyRestaurants(BigDecimal latitude, BigDecimal longitude, BigDecimal radiusKm);
 
