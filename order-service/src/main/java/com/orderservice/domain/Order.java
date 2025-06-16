@@ -19,6 +19,10 @@ import lombok.ToString;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import jakarta.persistence.Id;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 @Builder
 @NoArgsConstructor
@@ -89,6 +93,22 @@ public class Order {
 
     @Column(name = "special_requests", columnDefinition = "TEXT")
     private String specialRequests;
+
+    @Column(name = "created_at", nullable = false)
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @Column(name = "created_by", nullable = false)
+    @CreatedBy
+    private String createdBy;
+
+    @Column(name = "updated_at")
+    @LastModifiedDate
+    private LocalDateTime updateAt;
+
+    @Column(name = "updated_by")
+    @LastModifiedBy
+    private String updatedBy;
 
     public enum OrderStatus {
         PENDING,
