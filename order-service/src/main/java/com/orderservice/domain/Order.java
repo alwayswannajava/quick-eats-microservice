@@ -18,6 +18,8 @@ import lombok.Setter;
 import lombok.ToString;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+
 import jakarta.persistence.Id;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -109,7 +111,7 @@ public class Order {
     @Column(name = "updated_by")
     @LastModifiedBy
     private String updatedBy;
-
+    
     public enum OrderStatus {
         PENDING,
         CONFIRMED,

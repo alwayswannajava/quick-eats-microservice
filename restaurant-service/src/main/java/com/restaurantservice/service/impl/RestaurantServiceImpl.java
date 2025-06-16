@@ -10,7 +10,11 @@ import com.restaurantservice.service.RestaurantService;
 import com.restaurantservice.service.exception.RestaurantNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Metrics;
+import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -44,7 +48,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public Restaurant fetch(String id) {
-    log.info("Fetching restaurant with id: {}", id);
+        log.info("Fetching restaurant with id: {}", id);
         return restaurantRepository.findById(id)
                 .orElseThrow(() -> new RestaurantNotFoundException
                         ("Restaurant not found with id: " + id));
@@ -67,12 +71,24 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public void delete(String id) {
+        log.info("Deleting restaurant with id: {}", id);
         restaurantRepository.deleteById(id);
+        log.info("Restaurant with id: {} deleted successfully", id);
+    }
+
+    @Override
+    public List<Restaurant> findByLocation(Point point, Distance distance) {
+        log.info("Finding restaurants near point: {}, within distance: {}", point, distance);
+        return restaurantRepository.findByLocationNear(point, distance);
     }
 
     @Override
     public List<Restaurant> findNearbyRestaurants(BigDecimal latitude, BigDecimal longitude, BigDecimal radiusKm) {
-        return List.of();
+        log.info("Finding nearbyRestaurants for latitude: {}, longitude: {}, radiusKm: {}", latitude, longitude, radiusKm);
+        Point point = new Point(latitude.doubleValue(), longitude.doubleValue());
+        Distance distance = new Distance(radiusKm.doubleValue(), Metrics.KILOMETERS);
+        return restaurantRepository.findByLocationNear(point, distance);
+
     }
 
     @Override
@@ -112,7 +128,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public Restaurant updateWorkingHours(String id, WorkingHours workingHours) {
-    log.info("Updating working hours for restaurant with id: {}", id);
+        log.info("Updating working hours for restaurant with id: {}", id);
         return restaurantRepository.findById(id)
                 .map(restaurant -> {
                     restaurant.setWorkingHours(workingHours);
@@ -145,7 +161,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public Restaurant updateRestaurantStatus(String id, RestaurantStatus status) {
-    log.info("Updating status for restaurant with id: {} to {}", id, status);
+        log.info("Updating status for restaurant with id: {} to {}", id, status);
         return restaurantRepository.findById(id)
                 .map(restaurant -> {
                     restaurant.setStatus(status);

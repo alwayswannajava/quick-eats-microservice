@@ -8,6 +8,8 @@ import io.mongock.api.annotations.RollbackExecution;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.CollectionOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
+import org.springframework.data.mongodb.core.index.GeospatialIndex;
 import org.springframework.data.mongodb.core.index.Index;
 import org.springframework.data.mongodb.core.schema.JsonSchemaProperty;
 import org.springframework.data.mongodb.core.schema.MongoJsonSchema;
@@ -22,7 +24,7 @@ public class V001__create_restaurant_collection {
         MongoJsonSchema schema = MongoJsonSchema.builder()
                 .required(
                         "owner_id", "name", "cuisine_type", "phone", "email",
-                        "address", "working_hours", "delivery_fee", "min_order_amount",
+                        "address", "location", "working_hours", "delivery_fee", "min_order_amount",
                         "delivery_radius", "status", "created_by", "created_at"
                 )
                 .properties(
@@ -48,6 +50,16 @@ public class V001__create_restaurant_collection {
                                                         JsonSchemaProperty.decimal128("latitude"),
                                                         JsonSchemaProperty.decimal128("longitude")
                                                 )
+                                ),
+                        // GeoJSON Point field for geospatial queries
+                        JsonSchemaProperty.object("location")
+                                .required("type", "coordinates")
+                                .properties(
+                                        JsonSchemaProperty.string("type").possibleValues("Point"),
+                                        JsonSchemaProperty.array("coordinates")
+                                                .minItems(2)
+                                                .maxItems(2)
+                                                .items(JsonSchemaProperty.decimal128("coordinate"))
                                 ),
                         JsonSchemaProperty.object("working_hours")
                                 .properties(
@@ -122,6 +134,25 @@ public class V001__create_restaurant_collection {
 
         mongoTemplate.indexOps("restaurants").createIndex(
                 new Index().on("address.coordinates", Sort.Direction.ASC).named("idx_restaurant_coordinates")
+        );
+
+        mongoTemplate.indexOps("restaurants").createIndex(
+                new GeospatialIndex("location").typed(GeoSpatialIndexType.GEO_2DSPHERE)
+                        .named("idx_restaurant_location_2dsphere")
+        );
+
+        mongoTemplate.indexOps("restaurants").createIndex(
+                new Index()
+                        .on("location", Sort.Direction.ASC)
+                        .on("status", Sort.Direction.ASC)
+                        .named("idx_restaurant_location_status")
+        );
+
+        mongoTemplate.indexOps("restaurants").createIndex(
+                new Index()
+                        .on("location", Sort.Direction.ASC)
+                        .on("cuisine_type", Sort.Direction.ASC)
+                        .named("idx_restaurant_location_cuisine")
         );
     }
 
