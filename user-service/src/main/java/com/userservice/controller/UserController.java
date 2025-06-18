@@ -7,6 +7,7 @@ import com.userservice.dto.response.FetchUserResponseDto;
 import com.userservice.dto.response.UpdateUserResponseDto;
 import com.userservice.service.UserService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,16 +25,12 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
 @Validated
 public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
-
-    public UserController(UserService userService, UserMapper userMapper) {
-        this.userService = userService;
-        this.userMapper = userMapper;
-    }
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
@@ -68,6 +65,7 @@ public class UserController {
         log.info("------------------------DELETE REQUEST------------------------");
         log.info("Deleting user with ID: {}", userId);
         userService.delete(userId);
+        log.info("User with ID: {} deleted successfully", userId);
         return ResponseEntity.noContent().build();
     }
 }
