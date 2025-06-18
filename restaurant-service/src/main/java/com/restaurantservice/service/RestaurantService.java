@@ -4,6 +4,7 @@ import com.restaurantservice.common.RestaurantStatus;
 import com.restaurantservice.domain.Restaurant;
 import com.restaurantservice.domain.WorkingHours;
 import com.restaurantservice.dto.request.RestaurantFilter;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Point;
@@ -16,7 +17,7 @@ import java.util.List;
 public interface RestaurantService {
     void create(Restaurant restaurant);
 
-    List<Restaurant> fetchAll(Pageable pageable);
+    Page<Restaurant> fetchAll(Pageable pageable);
 
     Restaurant fetch(String id);
 

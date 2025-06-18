@@ -2,13 +2,17 @@ package com.restaurantservice.service.impl;
 
 import com.mongodb.MongoException;
 import com.restaurantservice.common.RestaurantStatus;
+import com.restaurantservice.controller.mapper.RestaurantMapper;
 import com.restaurantservice.domain.Restaurant;
 import com.restaurantservice.domain.WorkingHours;
 import com.restaurantservice.dto.request.RestaurantFilter;
 import com.restaurantservice.repository.RestaurantRepository;
 import com.restaurantservice.service.RestaurantService;
 import com.restaurantservice.service.exception.RestaurantNotFoundException;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
@@ -21,29 +25,29 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
     private final RestaurantRepository restaurantRepository;
-
-    public RestaurantServiceImpl(RestaurantRepository restaurantRepository) {
-        this.restaurantRepository = restaurantRepository;
-    }
+    private final RestaurantMapper restaurantMapper;
 
     @Override
     public void create(Restaurant restaurant) {
         log.info("Creating restaurant: {}", restaurant);
         try {
+            log.info("Trying to save restaurant: {}", restaurant);
             restaurantRepository.save(restaurant);
+            log.info("Restaurant created successfully: {}", restaurant);
         } catch (Exception e) {
             log.error("Error while creating restaurant: {}", restaurant, e);
             throw new MongoException("Error while creating restaurant: " + e.getMessage());
         }
-        log.info("Restaurant created successfully: {}", restaurant);
     }
 
     @Override
-    public List<Restaurant> fetchAll(Pageable pageable) {
-        return List.of();
+    public Page<Restaurant> fetchAll(Pageable pageable) {
+        log.info("Fetching all restaurants with pagination: {}", pageable);
+        return restaurantRepository.findAll(pageable);
     }
 
     @Override
@@ -60,8 +64,11 @@ public class RestaurantServiceImpl implements RestaurantService {
         Restaurant existingRestaurant = restaurantRepository.findById(id)
                 .orElseThrow(() -> new RestaurantNotFoundException
                         ("Restaurant not found with id: " + id));
-
+        log.info("Found out restaurant with id: {}", id);
         try {
+            log.info("Trying to update restaurant: {}", existingRestaurant);
+            restaurantMapper.toRestaurant(existingRestaurant, restaurant);
+            log.info("Restaurant updated successfully: {}", existingRestaurant);
             return restaurantRepository.save(restaurant);
         } catch (Exception e) {
             log.error("Error while updating restaurant with id: {}", id, e);
@@ -86,6 +93,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     public List<Restaurant> findNearbyRestaurants(BigDecimal latitude, BigDecimal longitude, BigDecimal radiusKm) {
         log.info("Finding nearbyRestaurants for latitude: {}, longitude: {}, radiusKm: {}", latitude, longitude, radiusKm);
         Point point = new Point(latitude.doubleValue(), longitude.doubleValue());
+
         Distance distance = new Distance(radiusKm.doubleValue(), Metrics.KILOMETERS);
         return restaurantRepository.findByLocationNear(point, distance);
 

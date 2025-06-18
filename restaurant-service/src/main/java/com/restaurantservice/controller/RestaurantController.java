@@ -8,6 +8,8 @@ import com.restaurantservice.dto.response.FetchRestaurantResponse;
 import com.restaurantservice.dto.response.UpdateRestaurantResponse;
 import com.restaurantservice.service.RestaurantService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,17 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/restaurants")
 @Validated
 public class RestaurantController {
     private final RestaurantService restaurantService;
     private final RestaurantMapper restaurantMapper;
-
-    public RestaurantController(RestaurantService restaurantService,
-                                RestaurantMapper restaurantMapper) {
-        this.restaurantService = restaurantService;
-        this.restaurantMapper = restaurantMapper;
-    }
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
