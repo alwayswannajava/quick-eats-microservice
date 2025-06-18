@@ -7,23 +7,24 @@ import com.orderservice.service.OrderService;
 import com.orderservice.service.exception.OrderNotFoundException;
 import com.orderservice.service.exception.OrderProcessingException;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
-@AllArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
-
 
     @Override
     @Transactional
     public void create(Order order) {
         log.info("Creating order: {}", order);
         try {
+            log.info("Trying to save order: {}", order);
             orderRepository.save(order);
             log.info("Order created successfully: {}", order);
         } catch (Exception e) {
