@@ -62,7 +62,7 @@ public class RestaurantServiceImpl implements RestaurantService {
                         ("Restaurant not found with id: " + id));
 
         try {
-            return restaurantRepository.save(existingRestaurant);
+            return restaurantRepository.save(restaurant);
         } catch (Exception e) {
             log.error("Error while updating restaurant with id: {}", id, e);
             throw new MongoException("Error while updating restaurant: " + e.getMessage());

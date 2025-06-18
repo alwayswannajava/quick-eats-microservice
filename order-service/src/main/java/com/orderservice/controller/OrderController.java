@@ -6,6 +6,7 @@ import com.orderservice.dto.request.UpdateOrderRequest;
 import com.orderservice.dto.response.FetchOrderResponse;
 import com.orderservice.dto.response.UpdateOrderResponse;
 import com.orderservice.service.OrderService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/v1/orders")
 public class OrderController {
     private final OrderService orderService;
     private final OrderMapper orderMapper;
-
-    public OrderController(OrderService orderService, OrderMapper orderMapper) {
-        this.orderService = orderService;
-        this.orderMapper = orderMapper;
-    }
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
