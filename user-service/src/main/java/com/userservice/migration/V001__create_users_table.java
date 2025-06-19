@@ -3,6 +3,7 @@ package com.userservice.migration;
 import io.mongock.api.annotations.ChangeUnit;
 import io.mongock.api.annotations.Execution;
 import io.mongock.api.annotations.RollbackExecution;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.CollectionOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.Index;
@@ -41,9 +42,9 @@ public class V001__create_users_table {
 
         IndexOperations indexOps = mongoTemplate.indexOps("users");
         indexOps.createIndex(new Index().on("email",
-                org.springframework.data.domain.Sort.Direction.ASC).unique().named("idx_users_email"));
+                Sort.Direction.ASC).unique().named("idx_users_email"));
         indexOps.createIndex(new Index().on("phone",
-                org.springframework.data.domain.Sort.Direction.ASC).unique().named("idx_users_phone"));
+                Sort.Direction.ASC).unique().named("idx_users_phone"));
     }
 
     @RollbackExecution
