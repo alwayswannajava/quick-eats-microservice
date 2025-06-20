@@ -34,6 +34,7 @@ public class UserController {
     @PostMapping("/new")
     public ResponseEntity<Void> createUser(@RequestBody @Valid CreateUserRequest createUserRequest) {
         log.info("------------------------POST REQUEST------------------------");
+        log.info("Creating a new user: {}", createUserRequest);
         userService.create(userMapper.toUser(createUserRequest));
         log.info("------------------------POST REQUEST END------------------------");
         return ResponseEntity.status(HttpStatus.CREATED).build();

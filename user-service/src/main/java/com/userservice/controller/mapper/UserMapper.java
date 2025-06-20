@@ -7,8 +7,6 @@ import com.userservice.dto.request.UpdateUserRequest;
 import com.userservice.dto.response.FetchUserResponse;
 import com.userservice.dto.response.UpdateUserResponse;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapperConfig.class, componentModel = "spring")
 public interface UserMapper {
@@ -20,8 +18,10 @@ public interface UserMapper {
     @Mapping(source = "password", target = "passwordHash")
     User toUser(UpdateUserRequest updateUserRequest);
 
-    FetchUserResponse toFetchUserResponseDto(User user);
+    FetchUserResponse toFetchUserResponse(User user);
 
     @Mapping(source = "passwordHash", target = "password")
-    UpdateUserResponse toUpdateUserResponseDto(User user);
+    User toUser(CreateUserRequest createUserRequest);
+
+    UpdateUserResponse toUpdateUserResponse(User user);
 }
