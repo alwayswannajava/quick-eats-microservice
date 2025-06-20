@@ -1,5 +1,6 @@
 package com.userservice.controller.exception;
 
+import com.mongodb.MongoException;
 import com.userservice.service.exception.UserNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.net.URI;
 import java.util.List;
 
 import static com.userservice.utils.ValidationDetailsUtils.getValidationErrors;
@@ -24,7 +27,17 @@ public class GlobalExceptionTranslator extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ProblemDetail handleUserNotFoundException(UserNotFoundException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
-        problemDetail.setTitle("User Not Found");
+        problemDetail.setType(URI.create("user-not-found-error"));
+        problemDetail.setTitle("User Not Found Exception");
+        return problemDetail;
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(MongoException.class)
+    public ProblemDetail handleMongoException(MongoException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getLocalizedMessage());
+        problemDetail.setType(URI.create("user-process-error"));
+        problemDetail.setTitle("User processing error");
         return problemDetail;
     }
 
