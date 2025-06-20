@@ -1,11 +1,13 @@
 package com.userservice.dto.request;
 
+import com.userservice.domain.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public record UpdateUserRequestDto (
+public record CreateUserRequest(
         @NotBlank
         @Size(min = 2, max = 25, message = "First name must be between 2 and 25 characters")
         String firstName,
@@ -20,10 +22,13 @@ public record UpdateUserRequestDto (
 
         @NotBlank
         @Pattern(regexp = "^(\\+\\d{1,3}[- ]?)?\\d{10}$", message = "Invalid phone number format")
-        String phoneNumber,
+        String phone,
 
         @NotBlank
         @Email
-        String email
-){
+        String email,
+
+        @NotNull
+        User.Role role
+) {
 }
