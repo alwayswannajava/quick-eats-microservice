@@ -20,7 +20,7 @@ public record UpdateUserRequest(
 
         @NotBlank
         @Pattern(regexp = "^(\\+\\d{1,3}[- ]?)?\\d{10}$", message = "Invalid phone number format")
-        String phoneNumber,
+        String phone,
 
         @NotBlank
         @Email

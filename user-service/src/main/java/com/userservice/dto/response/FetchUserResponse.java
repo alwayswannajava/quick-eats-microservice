@@ -7,7 +7,7 @@ public record FetchUserResponse(
 
         String lastName,
 
-        String phoneNumber,
+        String phone,
 
         String email,
 

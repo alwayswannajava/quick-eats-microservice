@@ -10,11 +10,18 @@ import org.mapstruct.Mapper;
 
 @Mapper(config = MapperConfig.class, componentModel = "spring")
 public interface UserMapper {
+    @Mapping(source = "password", target = "passwordHash")
     User toUser(CreateUserRequest createUserRequest);
 
+    User toUser(@MappingTarget User existingUser, User user);
+
+    @Mapping(source = "password", target = "passwordHash")
     User toUser(UpdateUserRequest updateUserRequest);
 
-    FetchUserResponse toFetchUserResponseDto(User user);
+    FetchUserResponse toFetchUserResponse(User user);
 
-    UpdateUserResponse toUpdateUserResponseDto(User user);
+    @Mapping(source = "passwordHash", target = "password")
+    User toUser(CreateUserRequest createUserRequest);
+
+    UpdateUserResponse toUpdateUserResponse(User user);
 }

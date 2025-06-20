@@ -55,6 +55,7 @@ public class User {
 
     private Role role;
 
+    @Builder.Default
     private UserStatus status = UserStatus.ACTIVE;
 
     @Field(name = "email_verified")

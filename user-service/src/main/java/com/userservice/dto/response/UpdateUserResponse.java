@@ -7,7 +7,7 @@ public record UpdateUserResponse(
 
         String password,
 
-        String phoneNumber,
+        String phone,
 
         String email
 ) {

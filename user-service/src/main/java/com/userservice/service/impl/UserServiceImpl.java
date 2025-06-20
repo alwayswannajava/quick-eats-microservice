@@ -16,6 +16,7 @@ import java.util.UUID;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Override
     public void create(User user) {
@@ -42,13 +43,14 @@ public class UserServiceImpl implements UserService {
     public User update(String userId, User user) {
         log.info("Updating user with ID: {}", userId);
         try {
-            userRepository.findById(userId)
+            User existingUser = userRepository.findById(userId)
                     .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
-            log.info("Existing user before update: {}", user);
-            user.setUserId(userId);
-            userRepository.save(user);
-            log.info("User updated successfully: {}", user);
-            return user;
+            log.info("Existing user before update: {}", existingUser);
+            userMapper.toUser(existingUser, user);
+            userRepository.save(existingUser);
+            log.info("User updated successfully");
+            log.info("Updated user details: {}", existingUser);
+            return existingUser;
         } catch (Exception e) {
             log.error("Error updating user: {}", e.getMessage());
             throw new MongoException("Error updating user: " + e.getMessage());

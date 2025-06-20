@@ -1,6 +1,7 @@
 package com.userservice.controller;
 
 import com.userservice.controller.mapper.UserMapper;
+import com.userservice.domain.User;
 import com.userservice.dto.request.CreateUserRequest;
 import com.userservice.dto.request.UpdateUserRequest;
 import com.userservice.dto.response.FetchUserResponse;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,26 +45,27 @@ public class UserController {
                                                          @RequestBody
                                                             @Valid UpdateUserRequest
                                                                     updateUserRequest) {
-        log.info("------------------------POST REQUEST------------------------");
-        log.info("Updating user: {}", updateUserRequest);
+        log.info("------------------------PATCH REQUEST------------------------");
+        User updatedUser = userService.update(userId, userMapper.toUser(updateUserRequest));
+        log.info("------------------------PATCH REQUEST END-------------------------");
         return ResponseEntity.ok(
-                userMapper.toUpdateUserResponseDto(
-                        userService.update(userId, userMapper.toUser(updateUserRequest))));
+                userMapper.toUpdateUserResponseDto(updatedUser));
     }
 
     @GetMapping("/fetch/{userId}")
     public ResponseEntity<FetchUserResponse> fetchUser(@PathVariable String userId) {
         log.info("------------------------GET REQUEST------------------------");
         log.info("Fetching user with ID: {}", userId);
-        return ResponseEntity.ok(userMapper.toFetchUserResponseDto(userService.fetchUser(userId)));
+        User fetchUser = userService.fetchUser(userId);
+        log.info("------------------------GET REQUEST END------------------------");
+        return ResponseEntity.ok(userMapper.toFetchUserResponseDto(fetchUser));
     }
 
     @DeleteMapping("/delete/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable String userId) {
         log.info("------------------------DELETE REQUEST------------------------");
-        log.info("Deleting user with ID: {}", userId);
         userService.delete(userId);
-        log.info("User with ID: {} deleted successfully", userId);
+        log.info("------------------------DELETE REQUEST END------------------------");
         return ResponseEntity.noContent().build();
     }
 }
