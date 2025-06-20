@@ -7,10 +7,13 @@ import com.userservice.dto.request.UpdateUserRequestDto;
 import com.userservice.dto.response.FetchUserResponseDto;
 import com.userservice.dto.response.UpdateUserResponseDto;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapperConfig.class, componentModel = "spring")
 public interface UserMapper {
+    @Mapping(source = "password", target = "passwordHash")
+    @Mapping(target = "status", expression = "java(com.userservice.domain.User.Status.ACTIVE)")
     User toUser(CreateUserRequestDto createUserRequestDto);
 
     User toUser(UpdateUserRequestDto updateUserRequestDto);

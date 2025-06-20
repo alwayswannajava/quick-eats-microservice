@@ -6,5 +6,5 @@ mongock:
 spring:
   data:
     mongodb:
-      uri: ${MONGODB_URI}
+      uri: {$MONGODB_URL}
       database: users

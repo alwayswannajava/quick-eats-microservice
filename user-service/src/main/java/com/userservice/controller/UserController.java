@@ -33,12 +33,12 @@ public class UserController {
     private final UserMapper userMapper;
 
     @PostMapping("/new")
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> createUser(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
         log.info("------------------------POST REQUEST------------------------");
         log.info("Creating a new user: {}", createUserRequestDto);
         userService.create(userMapper.toUser(createUserRequestDto));
-        return ResponseEntity.ok().build();
+        log.info("------------------------POST REQUEST END------------------------");
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/update/{userId}")
