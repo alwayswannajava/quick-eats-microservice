@@ -9,7 +9,6 @@ import com.restaurantservice.dto.request.RestaurantFilter;
 import com.restaurantservice.repository.RestaurantRepository;
 import com.restaurantservice.service.RestaurantService;
 import com.restaurantservice.service.exception.RestaurantNotFoundException;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,9 +17,7 @@ import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 

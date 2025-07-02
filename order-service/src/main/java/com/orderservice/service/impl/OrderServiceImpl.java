@@ -6,7 +6,6 @@ import com.orderservice.repository.OrderRepository;
 import com.orderservice.service.OrderService;
 import com.orderservice.service.exception.OrderNotFoundException;
 import com.orderservice.service.exception.OrderProcessingException;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
