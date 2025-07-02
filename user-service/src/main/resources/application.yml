@@ -1,0 +1,10 @@
+server:
+  port: 8081
+mongock:
+  migration-scan-package: com.userservice.migration
+  enabled: true
+spring:
+  data:
+    mongodb:
+      uri: {$MONGODB_URL}
+      database: users
