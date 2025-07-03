@@ -1,23 +1,10 @@
-server:
-  port: 8083
-spring:
-  liquibase:
-    default-schema: public
-  application:
-    name: order-service
-  datasource:
-    url: jdbc:postgresql://localhost:5432/orders?useSSL=false&serverTimezone=UTC
-    username: ${POSTGRES_USERNAME}
-    password: ${POSTGRES_PASSWORD}
-    driver-class-name: org.postgresql.Driver
-    hikari:
-      maximum-pool-size: 10
-      minimum-idle: 5
-      idle-timeout: 30000
-      connection-timeout: 30000
-      max-lifetime: 1800000
-  jpa:
-    hibernate:
-        ddl-auto: validate
-    show-sql: true
-    open-in-view: false
+build:
+  version: "3.0"
+
+order-service:
+  message: "Welcome to quick-eats order microservice local APIs "
+  contactDetails:
+    name: "Mykhailo Kornukh - Java Developer"
+    email: "mykhailo.kornukh@gmail.com"
+  onCallSupport:
+    - +380 68 123 4567
