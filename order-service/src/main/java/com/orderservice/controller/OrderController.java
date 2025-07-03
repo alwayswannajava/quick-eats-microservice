@@ -3,10 +3,10 @@ package com.orderservice.controller;
 import com.orderservice.controller.mapper.OrderMapper;
 import com.orderservice.dto.request.CreateOrderRequest;
 import com.orderservice.dto.request.UpdateOrderRequest;
+import com.orderservice.dto.response.OrderContactInfoResponse;
 import com.orderservice.dto.response.FetchOrderResponse;
 import com.orderservice.dto.response.UpdateOrderResponse;
 import com.orderservice.service.OrderService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderController {
     private final OrderService orderService;
     private final OrderMapper orderMapper;
+    private final OrderContactInfoResponse orderContactInfoResponse;
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
@@ -68,5 +69,13 @@ public class OrderController {
         log.info("Order deleted successfully");
         log.info("------------------------DELETE REQUEST END------------------------");
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/fetch/contact-info")
+    public ResponseEntity<OrderContactInfoResponse> fetchContactInfo() {
+        log.info("------------------------GET REQUEST------------------------");
+        log.info("Received request to fetch contact information");
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(orderContactInfoResponse);
     }
 }
