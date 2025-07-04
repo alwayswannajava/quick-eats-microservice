@@ -1,10 +1,10 @@
 build:
   version: "1.0"
 
-order-service:
+orders:
   message: "Welcome to quick-eats order microservice production APIs "
   contactDetails:
     name: "Oleksand Usyk - Product Owner"
     email: "oleksandr.usyk@ukr.net"
-  onCallSupport:
+  onCallSupportNumbers:
     - +380 68 123 4567
