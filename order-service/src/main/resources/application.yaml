@@ -24,4 +24,4 @@ spring:
     show-sql: true
     open-in-view: false
   config:
-    import: "configserver:http://localhost:8071/"
+    import: "optional:configserver:http://localhost:8071/"
