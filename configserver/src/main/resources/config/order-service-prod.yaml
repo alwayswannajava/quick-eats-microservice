@@ -4,7 +4,7 @@ build:
 orders:
   message: "Welcome to quick-eats order microservice production APIs "
   contactDetails:
-    name: "Oleksand Usyk - Product Owner"
-    email: "oleksandr.usyk@ukr.net"
+    name: "Vasilyi Shevchenko - Product Owner"
+    email: "vasylyi.shevchenko@ukr.net"
   onCallSupportNumbers:
     - +380 68 123 4567
