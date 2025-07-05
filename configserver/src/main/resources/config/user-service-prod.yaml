@@ -1,0 +1,10 @@
+build:
+  version: "3.0"
+
+orders:
+  message: "Welcome to quick-eats user microservice production APIs"
+  contactDetails:
+    name: "Olga Savchenko - Product Owner"
+    email: "olga.savchenko@gmail.com"
+  onCallSupportNumbers:
+    - +380 68 123 4567
