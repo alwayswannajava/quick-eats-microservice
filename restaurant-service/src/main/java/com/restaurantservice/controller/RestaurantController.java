@@ -5,6 +5,7 @@ import com.restaurantservice.domain.Restaurant;
 import com.restaurantservice.dto.request.CreateRestaurantRequest;
 import com.restaurantservice.dto.request.UpdateRestaurantRequest;
 import com.restaurantservice.dto.response.FetchRestaurantResponse;
+import com.restaurantservice.dto.response.RestaurantContactInfoResponse;
 import com.restaurantservice.dto.response.UpdateRestaurantResponse;
 import com.restaurantservice.service.RestaurantService;
 import jakarta.validation.Valid;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RestaurantController {
     private final RestaurantService restaurantService;
     private final RestaurantMapper restaurantMapper;
+    private final RestaurantContactInfoResponse restaurantContactInfoResponse;
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
@@ -78,5 +80,11 @@ public class RestaurantController {
         return ResponseEntity.noContent().build();
     }
 
-
+    @GetMapping("/fetch/contact-info")
+    public ResponseEntity<RestaurantContactInfoResponse> fetchContactInfo() {
+        log.info("------------------------GET REQUEST------------------------");
+        log.info("Received request to fetch contact information");
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(restaurantContactInfoResponse);
+    }
 }
