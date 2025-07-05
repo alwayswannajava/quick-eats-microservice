@@ -4,7 +4,13 @@ mongock:
   migration-scan-package: com.restarauntservice.migration
   enabled: true
 spring:
+  profiles:
+    active: "prod"
+  application:
+    name: restaurant-service
   data:
     mongodb:
-      uri: {MONGODB_URL}
+      uri: ${MONGODB_URL}
       database: restaurants
+  config:
+    import: "optional:classpath:http://localhost:8071/"
