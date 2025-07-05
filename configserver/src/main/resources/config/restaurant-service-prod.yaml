@@ -1,0 +1,10 @@
+build:
+  version: "1.0"
+
+order-service:
+  message: "Welcome to quick-eats restaurant microservice production APIs "
+  contactDetails:
+    name: "Petro Khmelnitskiy - Product Owner"
+    email: "petro.khmelnitskiy@ukr.net"
+  onCallSupport:
+    - +380 68 123 4567
