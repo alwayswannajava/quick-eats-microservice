@@ -6,6 +6,7 @@ import com.userservice.dto.request.CreateUserRequest;
 import com.userservice.dto.request.UpdateUserRequest;
 import com.userservice.dto.response.FetchUserResponse;
 import com.userservice.dto.response.UpdateUserResponse;
+import com.userservice.dto.response.UserContactInfoResponse;
 import com.userservice.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
+    private final UserContactInfoResponse userContactInfoResponse;
 
     @PostMapping("/new")
     public ResponseEntity<Void> createUser(@RequestBody @Valid CreateUserRequest createUserRequest) {
@@ -66,5 +68,13 @@ public class UserController {
         userService.delete(userId);
         log.info("------------------------DELETE REQUEST END------------------------");
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/fetch/contact-info")
+    public ResponseEntity<UserContactInfoResponse> fetchContactInfo() {
+        log.info("------------------------GET REQUEST----------------------");
+        log.info("Received request to fetch contact information");
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userContactInfoResponse);
     }
 }

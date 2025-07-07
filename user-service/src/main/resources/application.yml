@@ -4,7 +4,13 @@ mongock:
   migration-scan-package: com.userservice.migration
   enabled: true
 spring:
+  profiles:
+    active: "prod"
   data:
     mongodb:
       uri: {$MONGODB_URL}
       database: users
+  config:
+    import: "optional:classpath:http://localhost:8071"
+  application:
+    name: user-service
