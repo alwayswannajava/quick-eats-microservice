@@ -14,3 +14,11 @@ spring:
     import: "optional:classpath:http://localhost:8071"
   application:
     name: user-service
+  rabbitmq:
+    host: localhost
+    port: 5672
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
