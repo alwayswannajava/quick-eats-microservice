@@ -15,8 +15,13 @@ spring:
   application:
     name: user-service
   rabbitmq:
-    host: localhost
+    host: "localhost"
     port: 5672
+    username: "guest"
+    password: "guest"
+  cloud:
+    bus:
+      enabled: true
 management:
   endpoints:
     web:
