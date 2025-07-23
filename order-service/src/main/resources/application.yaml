@@ -25,12 +25,6 @@ spring:
     open-in-view: false
   config:
     import: "optional:configserver:http://localhost:8071/"
-  rabbitmq:
-    host: "localhost"
-    port: 5672
-  cloud:
-    bus:
-      enabled: true
 management:
   endpoints:
     web:
