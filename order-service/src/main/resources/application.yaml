@@ -9,8 +9,8 @@ spring:
     name: order-service
   datasource:
     url: jdbc:postgresql://localhost:5432/orders?useSSL=false&serverTimezone=UTC
-    username: ${POSTRESQL_USER}
-    password: ${POSTGRESQL_PASSWORD}
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10

@@ -13,7 +13,7 @@ spring:
       uri: ${MONGODB_URL}
       database: restaurants
   config:
-    import: "optional:classpath:http://localhost:8071/"
+    import: "optional:configserver:http://localhost:8071/"
 management:
   endpoints:
     web:

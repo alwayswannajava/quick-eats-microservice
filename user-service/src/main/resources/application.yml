@@ -8,10 +8,10 @@ spring:
     active: "prod"
   data:
     mongodb:
-      uri: {$MONGODB_URL}
+      uri: ${MONGODB_URL}
       database: users
   config:
-    import: "optional:classpath:http://localhost:8071"
+    import: "optional:configserver:http://localhost:8071/"
   application:
     name: user-service
 management:
