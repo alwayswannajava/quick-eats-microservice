@@ -36,7 +36,6 @@ dependencies {
     implementation 'io.mongock:mongock-springboot:5.5.1'
     implementation 'io.mongock:mongodb-springdata-v4-driver:5.5.1'
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
-    implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
