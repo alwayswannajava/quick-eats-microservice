@@ -1,0 +1,96 @@
+services:
+  order-service-db:
+    container_name: order-service-db
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRESQL_DATABASE: order-service-db
+    extends:
+      file: common-config.yml
+      service: microservice-db-config
+
+  restaurant-service-db:
+    container_name: restaurant-service-db
+    environment:
+      MONGODB_DATABASE: restaurant-service-db
+    extends:
+      file: common-config.yml
+      service: microservice-nosql-db-config
+
+  user-service-db:
+    container_name: user-service-db
+    environment:
+      MONGODB_DATABASE: user-service-db
+    extends:
+      file: common-config.yml
+      service: microservice-nosql-db-config
+
+  configserver:
+    image: "mykhailokornukh/configserver:latest"
+    container_name: configserver
+    ports:
+      - "8071:8071"
+    healthcheck:
+      test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    extends:
+      file: common-config.yml
+      service: microservice-base-config
+
+  order-service:
+    image: "mykhailokornukh/order-service:latest"
+    container_name: order-service
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_APPLICATION_NAME: "order-service"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://order-service-db:5432/orders"
+    depends_on:
+      order-service-db:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
+  restaurant-service:
+    image: "mykhailokornukh/restaurant-service:latest"
+    container_name: restaurant-service
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_APPLICATION_NAME: "restaurant-service"
+      SPRING_DATASOURCE_URL: "mongodb+srv://cluster0.bgoy1vx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0://restaurant-service-db/restaurants"
+    depends_on:
+      restaurant-service-db:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
+  user-service:
+    image: "mykhailokornukh/user-service:latest"
+    container_name: user-service
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_APPLICATION_NAME: "user-service"
+      SPRING_DATASOURCE_URL: "mongodb+srv://cluster0.bgoy1vx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0://user-service-db/users"
+    depends_on:
+      user-service-db:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
+networks:
+  quick-eats:
+    driver: "bridge"
