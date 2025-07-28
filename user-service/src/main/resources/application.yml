@@ -14,8 +14,21 @@ spring:
     import: "optional:classpath:http://localhost:8071"
   application:
     name: user-service
+
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+  endpoint:
+    shutdown:
+      access: unrestricted
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
