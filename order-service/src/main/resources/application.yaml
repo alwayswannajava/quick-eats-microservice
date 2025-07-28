@@ -1,5 +1,6 @@
 server:
   port: 8083
+
 spring:
   profiles:
     active: "prod"
@@ -20,13 +21,26 @@ spring:
       max-lifetime: 1800000
   jpa:
     hibernate:
-        ddl-auto: validate
+      ddl-auto: validate
     show-sql: true
     open-in-view: false
   config:
     import: "optional:configserver:http://localhost:8071/"
+
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+  endpoint:
+    shutdown:
+      access: unrestricted
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
