@@ -1,0 +1,21 @@
+server:
+  port: 8081
+mongock:
+  migration-scan-package: com.userservice.migration
+  enabled: true
+spring:
+  profiles:
+    active: "prod"
+  data:
+    mongodb:
+      uri: ${MONGODB_URL}
+      database: users
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+  application:
+    name: user-service
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
