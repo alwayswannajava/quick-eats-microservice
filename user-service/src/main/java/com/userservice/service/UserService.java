@@ -7,6 +7,8 @@ public interface UserService {
 
     User fetchUser(String userId);
 
+    User fetchUserByPhone(String phone);
+
     User update(String userId, User user);
 
     void delete(String userId);

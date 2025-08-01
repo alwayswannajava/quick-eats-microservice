@@ -6,6 +6,9 @@ import com.userservice.dto.request.CreateUserRequest;
 import com.userservice.dto.request.UpdateUserRequest;
 import com.userservice.dto.response.FetchUserResponse;
 import com.userservice.dto.response.UpdateUserResponse;
+import com.userservice.dto.response.client.FetchOrderResponse;
+import com.userservice.dto.response.client.FetchRestaurantResponse;
+import com.userservice.dto.response.client.UserClientResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -24,4 +27,8 @@ public interface UserMapper {
 
     @Mapping(source = "passwordHash", target = "password")
     UpdateUserResponse toUpdateUserResponseDto(User user);
+
+    UserClientResponse toUserClientResponse(User user,
+                                               FetchOrderResponse orderResponse,
+                                               FetchRestaurantResponse restaurantResponse);
 }
