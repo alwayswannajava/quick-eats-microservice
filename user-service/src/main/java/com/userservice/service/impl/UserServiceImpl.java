@@ -9,7 +9,6 @@ import com.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -37,6 +36,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(userId)
                 .orElseThrow(() ->
                         new UserNotFoundException("User not found with ID: " + userId));
+    }
+
+    @Override
+    public User fetchUserByPhone(String phone) {
+        return userRepository.findByPhone(phone)
+                .orElseThrow(() -> new UserNotFoundException("User not found with phone: " + phone));
     }
 
     @Override
