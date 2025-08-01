@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -86,5 +87,15 @@ public class RestaurantController {
         log.info("Received request to fetch contact information");
         return ResponseEntity.status(HttpStatus.OK)
                 .body(restaurantContactInfoResponse);
+    }
+
+    @GetMapping("/fetch")
+    public ResponseEntity<FetchRestaurantResponse> fetchRestaurantByPhone(@RequestParam String phone) {
+        log.info("------------------------GET REQUEST------------------------");
+        log.info("Received request to fetch restaurant information");
+        FetchRestaurantResponse restaurantResponse = restaurantMapper.toFetchRestaurantResponseDto(restaurantService.findByPhone(phone));
+        log.info("Fetched restaurant: {}", restaurantResponse);
+        log.info("------------------------GET REQUEST END------------------------");
+        return ResponseEntity.ok(restaurantResponse);
     }
 }
