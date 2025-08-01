@@ -31,7 +31,7 @@ public class UserClientServiceImpl implements UserClientService {
         log.info("Entering at feign clients...");
 
         ResponseEntity<FetchRestaurantResponse> restaurantsDetails = restaurantFeignClient.fetchRestaurantDetails(mobileNumber);
-        ResponseEntity<FetchOrderResponse> ordersDetails = orderFeignClient.fetchCardDetails(mobileNumber);
+        ResponseEntity<FetchOrderResponse> ordersDetails = orderFeignClient.fetchOrderDetails(mobileNumber);
 
         log.info("Exiting from feign clients...Fetching is done");
         return userMapper.toUserClientResponse(user, ordersDetails.getBody(), restaurantsDetails.getBody());
