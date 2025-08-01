@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface RestaurantService {
     void create(Restaurant restaurant);
@@ -44,4 +45,6 @@ public interface RestaurantService {
     Restaurant deactivateRestaurant(String id);
 
     Restaurant updateRestaurantStatus(String id, RestaurantStatus status);
+
+    Restaurant findByPhone(String phone);
 }

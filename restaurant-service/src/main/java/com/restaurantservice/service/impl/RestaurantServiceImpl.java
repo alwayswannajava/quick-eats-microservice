@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -173,5 +174,12 @@ public class RestaurantServiceImpl implements RestaurantService {
                     return restaurantRepository.save(restaurant);
                 })
                 .orElseThrow(() -> new RestaurantNotFoundException("Restaurant not found with id: " + id));
+    }
+
+    @Override
+    public Restaurant findByPhone(String phone) {
+        return restaurantRepository.findByPhone(phone)
+                .orElseThrow(() -> new RestaurantNotFoundException("Restaurant not " +
+                        "found by phone: " + phone));
     }
 }

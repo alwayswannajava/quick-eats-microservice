@@ -24,29 +24,25 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionTranslator {
+    private static final String MEDIA_TYPE_JSON = "application/problem+json";
 
     @ExceptionHandler(RestaurantNotFoundException.class)
     public ResponseEntity<ProblemDetail> handleRestaurantNotFoundException(RestaurantNotFoundException ex, HttpServletRequest request) {
-        String correlationId = getCorrelationId(request);
 
         ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
         problem.setTitle("Restaurant not found");
         problem.setDetail(ex.getMessage());
         problem.setType(URI.create("restaurant-not-found"));
         problem.setInstance(URI.create(request.getRequestURI()));
-        problem.setProperty("correlationId", correlationId);
-
-        log.warn("Restaurant not found, correlationId={}", correlationId);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .contentType(MediaType.valueOf("application/problem+json"))
+                .contentType(MediaType.valueOf(MEDIA_TYPE_JSON))
                 .body(problem);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ProblemDetail> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                       HttpServletRequest request) {
-        String correlationId = getCorrelationId(request);
 
         ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         problem.setTitle("Validation failed");
@@ -55,52 +51,38 @@ public class GlobalExceptionTranslator {
                 .collect(Collectors.joining(", ")));
         problem.setType(URI.create("invalid-input"));
         problem.setInstance(URI.create(request.getRequestURI()));
-        problem.setProperty("correlationId", correlationId);
 
-        log.warn("Validation error, correlationId={}", correlationId);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .contentType(MediaType.valueOf("application/problem+json"))
+                .contentType(MediaType.valueOf(MEDIA_TYPE_JSON))
                 .body(problem);
     }
 
     @ExceptionHandler(MongoException.class)
     public ResponseEntity<ProblemDetail> handleMongoException(MongoException ex, HttpServletRequest request) {
-        String correlationId = getCorrelationId(request);
+
         ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.CONFLICT);
         problem.setTitle("Restaurant processing error");
         problem.setDetail(ex.getMessage());
         problem.setType(URI.create("restaurant-process-error"));
         problem.setInstance(URI.create(request.getRequestURI()));
-        problem.setProperty("correlationId", correlationId);
-
-        log.warn("Validation error, correlationId={}", correlationId);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .contentType(MediaType.valueOf("application/problem+json"))
+                .contentType(MediaType.valueOf(MEDIA_TYPE_JSON))
                 .body(problem);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ProblemDetail> handleGenericException(Exception ex, HttpServletRequest request) {
-        String correlationId = getCorrelationId(request);
 
         ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         problem.setTitle("Internal server error");
         problem.setDetail("Unexpected error occurred");
         problem.setType(URI.create("internal-error"));
         problem.setInstance(URI.create(request.getRequestURI()));
-        problem.setProperty("correlationId", correlationId);
-
-        log.error("Unhandled exception, correlationId: {}", correlationId);
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .contentType(MediaType.valueOf("application/problem+json"))
+                .contentType(MediaType.valueOf(MEDIA_TYPE_JSON))
                 .body(problem);
-    }
-
-    private String getCorrelationId(HttpServletRequest request) {
-        return Optional.ofNullable(request.getHeader("X-Correlation-ID"))
-                .orElse(UUID.randomUUID().toString());
     }
 }
