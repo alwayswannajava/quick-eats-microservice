@@ -8,6 +8,8 @@ import com.orderservice.service.exception.OrderNotFoundException;
 import com.orderservice.service.exception.OrderProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,9 +60,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
+    @Modifying
     public void delete(String orderId) {
         log.info("Deleting order with id: {}", orderId);
         orderRepository.deleteById(orderId);
         log.info("Order with id: {} deleted successfully", orderId);
+    }
+
+    @Override
+    public Order fetchByPhone(String phone) {
+        return orderRepository.findByContactPhone(phone);
     }
 }
