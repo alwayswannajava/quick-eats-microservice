@@ -88,14 +88,4 @@ public class RestaurantController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(restaurantContactInfoResponse);
     }
-
-    @GetMapping("/fetch")
-    public ResponseEntity<FetchRestaurantResponse> fetchRestaurantByPhone(@RequestParam String phone) {
-        log.info("------------------------GET REQUEST------------------------");
-        log.info("Received request to fetch restaurant information");
-        FetchRestaurantResponse restaurantResponse = restaurantMapper.toFetchRestaurantResponseDto(restaurantService.findByPhone(phone));
-        log.info("Fetched restaurant: {}", restaurantResponse);
-        log.info("------------------------GET REQUEST END------------------------");
-        return ResponseEntity.ok(restaurantResponse);
-    }
 }
