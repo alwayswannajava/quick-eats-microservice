@@ -79,13 +79,4 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(orderContactInfoResponse);
     }
-
-    @GetMapping("/fetch")
-    public ResponseEntity<FetchOrderResponse> fetchOrderByPhone(@RequestParam String phone) {
-        log.info("------------------------GET REQUEST------------------------");
-        log.info("Received request to fetch order information");
-        FetchOrderResponse orderResponse = orderMapper.toFetchOrderResponse(orderService.fetch(phone));
-        log.info("------------------------GET END------------------------");
-        return ResponseEntity.ok(orderResponse);
-    }
 }
