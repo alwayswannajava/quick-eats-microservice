@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/restaurants")
+@RequestMapping("/api/v1")
 @Validated
 public class RestaurantController {
     private final RestaurantService restaurantService;
