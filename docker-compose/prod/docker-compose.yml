@@ -91,6 +91,45 @@ services:
       file: common-config.yml
       service: microservice-configserver-config
 
+  eurekaserver:
+    image: "mykhailokornukh/eurekaserver:latest"
+    container_name: eurekaserver
+    ports:
+      - "8070:8070"
+    depends_on:
+      configserver:
+        condition: service_healthy
+    healthcheck:
+      test: "curl --fail --silent localhost:8070/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+    environment:
+      SPRING_APPLICATION_NAME: "eurekaserver"
+
+  gatewayserver:
+    image: "mykhailokornukh/gatewayserver:latest"
+    container_name: gatewayserver
+    ports:
+      - "8072:8072"
+    depends_on:
+      order-service:
+        condition: service_healthy
+      restaurant-service:
+        condition: service_healthy
+      user-service:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "gateway-server"
+    extends:
+      file: common-config.yml
+      service: microservice-eureka-config
+
+
 networks:
   quick-eats:
     driver: "bridge"
