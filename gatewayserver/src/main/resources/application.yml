@@ -1,11 +1,8 @@
-server:
-  port: 8072
-
 spring:
   application:
     name: gateway-server
   config:
-    import: "optional:configserver:http://localhost:8071/"
+    import: "configserver:http://localhost:8071/"
   cloud:
     gateway:
       server:
@@ -31,6 +28,7 @@ info:
   app:
     name: "gatewayserver"
     description: "Quick Eats Gateway Server Application"
+    developer: "Mykhailo Kornukh"
     version: "1.0.0"
 
 logging:
