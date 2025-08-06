@@ -1,0 +1,10 @@
+build:
+  version: "3.0"
+
+orders:
+  message: "Welcome to quick-eats order microservice local APIs "
+  contactDetails:
+    name: "Mykhailo Kornukh - Java Developer"
+    email: "mykhailo.kornukh@gmail.com"
+  onCallSupportNumbers:
+    - +380 68 123 4567
