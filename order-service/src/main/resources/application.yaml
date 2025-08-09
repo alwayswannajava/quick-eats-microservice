@@ -44,3 +44,11 @@ eureka:
     registerWithEureka: true
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
+
+
+info:
+  app:
+    name: "order-service"
+    description: "Quick Eats Order Service Application"
+    developer: "Mykhailo Kornukh"
+    version: "1.0.0"
