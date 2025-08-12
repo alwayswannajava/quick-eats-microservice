@@ -52,57 +52,6 @@ services:
       file: common-config.yml
       service: microservice-base-config
 
-  order-service:
-    image: "mykhailokornukh/order-service:latest"
-    container_name: order-service
-    ports:
-      - "8083:8083"
-    environment:
-      SPRING_APPLICATION_NAME: "order-service"
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://order-service-db:5432/orders"
-    depends_on:
-      order-service-db:
-        condition: service_healthy
-      configserver:
-        condition: service_healthy
-    extends:
-      file: common-config.yml
-      service: microservice-configserver-config
-
-  restaurant-service:
-    image: "mykhailokornukh/restaurant-service:latest"
-    container_name: restaurant-service
-    ports:
-      - "8082:8082"
-    environment:
-      SPRING_APPLICATION_NAME: "restaurant-service"
-      SPRING_DATASOURCE_URL: "mongodb+srv://cluster0.bgoy1vx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0://restaurant-service-db/restaurants"
-    depends_on:
-      restaurant-service-db:
-        condition: service_healthy
-      configserver:
-        condition: service_healthy
-    extends:
-      file: common-config.yml
-      service: microservice-configserver-config
-
-  user-service:
-    image: "mykhailokornukh/user-service:latest"
-    container_name: user-service
-    ports:
-      - "8081:8081"
-    environment:
-      SPRING_APPLICATION_NAME: "user-service"
-      SPRING_DATASOURCE_URL: "mongodb+srv://cluster0.bgoy1vx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0://user-service-db/users"
-    depends_on:
-      user-service-db:
-        condition: service_healthy
-      configserver:
-        condition: service_healthy
-    extends:
-      file: common-config.yml
-      service: microservice-configserver-config
-
   eurekaserver:
     image: "mykhailokornukh/eurekaserver:latest"
     container_name: eurekaserver
@@ -123,8 +72,83 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "eurekaserver"
 
+  order-service:
+    image: "mykhailokornukh/order-service:latest"
+    container_name: order-service
+    ports:
+      - "8083:8083"
+    healthcheck:
+      test: "curl --fail --silent localhost:8083/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    environment:
+      SPRING_APPLICATION_NAME: "order-service"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://order-service-db:5432/orders"
+    depends_on:
+      order-service-db:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+    extends:
+      file: common-config.yml
+      service: microservice-eureka-config
+
+  restaurant-service:
+    image: "mykhailokornukh/restaurant-service:latest"
+    container_name: restaurant-service
+    ports:
+      - "8082:8082"
+    healthcheck:
+      test: "curl --fail --silent localhost:8082/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    environment:
+      SPRING_APPLICATION_NAME: "restaurant-service"
+      SPRING_DATASOURCE_URL: "mongodb+srv://cluster0.bgoy1vx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0://restaurant-service-db/restaurants"
+    depends_on:
+      restaurant-service-db:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+    extends:
+      file: common-config.yml
+      service: microservice-eureka-config
+
+  user-service:
+    image: "mykhailokornukh/user-service:latest"
+    container_name: user-service
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: "curl --fail --silent localhost:8081/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    environment:
+      SPRING_APPLICATION_NAME: "user-service"
+      SPRING_DATASOURCE_URL: "mongodb+srv://cluster0.bgoy1vx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0://user-service-db/users"
+    depends_on:
+      user-service-db:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+    extends:
+      file: common-config.yml
+      service: microservice-eureka-config
+
   gatewayserver:
-    image: "mykhailokornukh/gatewayserver:latest"
+    image: "mykhailokornukh/gateway-server:latest"
     container_name: gatewayserver
     ports:
       - "8072:8072"
