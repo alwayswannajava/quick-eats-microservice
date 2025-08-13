@@ -27,6 +27,7 @@ spring:
   config:
     import: "optional:configserver:http://localhost:8071/"
 
+
 management:
   endpoints:
     web:
@@ -35,6 +36,12 @@ management:
   endpoint:
     shutdown:
       access: unrestricted
+  info:
+    env:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
 
 eureka:
   instance:
@@ -44,7 +51,6 @@ eureka:
     registerWithEureka: true
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
-
 
 info:
   app:
