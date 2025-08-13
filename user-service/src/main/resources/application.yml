@@ -23,6 +23,12 @@ management:
   endpoint:
     shutdown:
       access: unrestricted
+  info:
+    env:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
 
 eureka:
   instance:
