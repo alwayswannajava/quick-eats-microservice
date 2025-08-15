@@ -96,7 +96,7 @@ services:
     container_name: tempo
     command: -config.file /etc/tempo-config.yml
     ports:
-      - "3110:3100"
+      - "3200:3200"
       - "4318:4318"
     volumes:
       - ../observability/tempo/tempo.yml:/etc/tempo-config.yml
@@ -280,6 +280,8 @@ services:
     extends:
       file: common-config.yml
       service: microservice-base-config
+    environment:
+      OTEL_SERVICE_NAME: "configserver"
 
   eurekaserver:
     image: "mykhailokornukh/eurekaserver:latest"
@@ -300,6 +302,7 @@ services:
       service: microservice-configserver-config
     environment:
       SPRING_APPLICATION_NAME: "eurekaserver"
+      OTEL_SERVICE_NAME: "eurekaserver"
 
   order-service:
     image: "mykhailokornukh/order-service:latest"
@@ -315,6 +318,7 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "order-service"
       SPRING_DATASOURCE_URL: "jdbc:postgresql://order-service-db:5432/orders"
+      OTEL_SERVICE_NAME: "order-service"
     depends_on:
       order-service-db:
         condition: service_healthy
@@ -340,6 +344,7 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "restaurant-service"
       SPRING_DATASOURCE_URL: "mongodb+srv://cluster0.bgoy1vx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0://restaurant-service-db/restaurants"
+      OTEL_SERVICE_NAME: "restaurant-service"
     depends_on:
       restaurant-service-db:
         condition: service_healthy
@@ -365,6 +370,7 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "user-service"
       SPRING_DATASOURCE_URL: "mongodb+srv://cluster0.bgoy1vx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0://user-service-db/users"
+      OTEL_SERVICE_NAME: "user-service"
     depends_on:
       user-service-db:
         condition: service_healthy
@@ -396,6 +402,7 @@ services:
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
       SPRING_DATA_REDIS_TIMEOUT: 5s
+      OTEL_SERVICE_NAME: "gateway-server"
     extends:
       file: common-config.yml
       service: microservice-eureka-config
