@@ -52,6 +52,10 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
 
+logging:
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+
 info:
   app:
     name: "order-service"
