@@ -24,12 +24,10 @@ ext {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation(platform("io.opentelemetry:opentelemetry-bom:1.39.0"))
-    implementation('io.opentelemetry:opentelemetry-api')
+    implementation 'io.opentelemetry.javaagent:opentelemetry-javaagent:2.18.1'
     implementation 'org.springframework.cloud:spring-cloud-config-server'
     implementation 'io.micrometer:micrometer-registry-prometheus'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    runtimeOnly 'io.micrometer:micrometer-registry-otlp'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
