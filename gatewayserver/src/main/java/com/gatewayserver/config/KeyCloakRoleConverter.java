@@ -24,6 +24,5 @@ public class KeyCloakRoleConverter implements Converter<Jwt, Collection<GrantedA
                 .map(roleName -> "ROLE_" + roleName)
                 .map(SimpleGrantedAuthority::new)
                 .collect(toList());
-
     }
 }
