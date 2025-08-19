@@ -1,4 +1,18 @@
 services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    ports:
+      - "7080:8080"
+    env_file:
+      - .env
+    environment:
+      KEYCLOAK_ADMIN: $KEYCLOAK_ADMIN
+      KEYCLOAK_ADMIN_PASSWORD: $KEYCLOAK_ADMIN_PASSWORD
+    command: "start-dev"
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
   read:
     image: grafana/loki:latest
     command: "-config.file=/etc/loki/config.yaml -target=read"
@@ -307,17 +321,17 @@ services:
   order-service:
     image: "mykhailokornukh/order-service:latest"
     container_name: order-service
-    ports:
-      - "8083:8083"
     healthcheck:
       test: "curl --fail --silent localhost:8083/actuator/health/readiness | grep UP || exit 1"
       interval: 20s
       timeout: 5s
       retries: 20
       start_period: 10s
+    env_file:
+      - .env
     environment:
       SPRING_APPLICATION_NAME: "order-service"
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://order-service-db:5432/orders"
+      SPRING_DATASOURCE_URL: $POSTGRESQL_DATABASE_URL
       OTEL_SERVICE_NAME: "order-service"
     depends_on:
       order-service-db:
@@ -333,17 +347,17 @@ services:
   restaurant-service:
     image: "mykhailokornukh/restaurant-service:latest"
     container_name: restaurant-service
-    ports:
-      - "8082:8082"
     healthcheck:
       test: "curl --fail --silent localhost:8082/actuator/health/readiness | grep UP || exit 1"
       interval: 20s
       timeout: 5s
       retries: 20
       start_period: 10s
+    env_file:
+      - .env
     environment:
       SPRING_APPLICATION_NAME: "restaurant-service"
-      SPRING_DATASOURCE_URL: "mongodb+srv://cluster0.bgoy1vx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0://restaurant-service-db/restaurants"
+      SPRING_DATASOURCE_URL: $MONGO_RESTAURANTS_DB_URL
       OTEL_SERVICE_NAME: "restaurant-service"
     depends_on:
       restaurant-service-db:
@@ -359,17 +373,17 @@ services:
   user-service:
     image: "mykhailokornukh/user-service:latest"
     container_name: user-service
-    ports:
-      - "8081:8081"
     healthcheck:
       test: "curl --fail --silent localhost:8081/actuator/health/readiness | grep UP || exit 1"
       interval: 20s
       timeout: 5s
       retries: 20
       start_period: 10s
+    env_file:
+      - .env
     environment:
       SPRING_APPLICATION_NAME: "user-service"
-      SPRING_DATASOURCE_URL: "mongodb+srv://cluster0.bgoy1vx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0://user-service-db/users"
+      SPRING_DATASOURCE_URL: $MONGO_USERS_DB_URL
       OTEL_SERVICE_NAME: "user-service"
     depends_on:
       user-service-db:
@@ -396,6 +410,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+    env_file:
+      - .env
     environment:
       SPRING_APPLICATION_NAME: "gateway-server"
       SPRING_DATA_REDIS_CONNECT-TIMEOUT: 10s
@@ -403,6 +419,7 @@ services:
       SPRING_DATA_REDIS_PORT: 6379
       SPRING_DATA_REDIS_TIMEOUT: 5s
       OTEL_SERVICE_NAME: "gateway-server"
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: $SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI
     extends:
       file: common-config.yml
       service: microservice-eureka-config
