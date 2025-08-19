@@ -1,0 +1,10 @@
+build:
+  version: "3.0"
+
+orders:
+  message: "Welcome to quick-eats restaurant microservice production APIs"
+  contactDetails:
+    name: "Oleksandr Khmelnitskiy - Product Owner"
+    email: "oleksandr.khmelnitskiy@gmail.com"
+  onCallSupportNumbers:
+    - +380 68 123 4567
