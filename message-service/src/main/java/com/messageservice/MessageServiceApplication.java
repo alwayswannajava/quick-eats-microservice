@@ -1,4 +1,4 @@
-package com.gateway.messageservice;
+package com.messageservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

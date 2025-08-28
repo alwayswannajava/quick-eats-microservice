@@ -1,3 +1,6 @@
 spring:
   application:
     name: message-service
+  cloud:
+    function:
+      definition: email
