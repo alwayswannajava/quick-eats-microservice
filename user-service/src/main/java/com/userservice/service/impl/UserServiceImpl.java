@@ -1,6 +1,7 @@
 package com.userservice.service.impl;
 
 import com.mongodb.MongoException;
+import com.userservice.dto.message.CreateUserMessageDto;
 import com.userservice.service.exception.UserNotFoundException;
 import com.userservice.controller.mapper.UserMapper;
 import com.userservice.domain.User;
@@ -8,6 +9,7 @@ import com.userservice.repository.UserRepository;
 import com.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -16,13 +18,15 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final StreamBridge streamBridge;
 
     @Override
     public void create(User user) {
         log.info("Creating a new user: {}", user);
         try {
             log.info("Trying to save user with email: {}", user.getEmail());
-            userRepository.save(user);
+            var savedUser = userRepository.save(user);
+            sendCommunication(savedUser);
             log.info("User created successfully with email: {}", user.getEmail());
         } catch (Exception e) {
             log.error("Error creating user: {}", e.getMessage());
@@ -48,7 +52,7 @@ public class UserServiceImpl implements UserService {
     public User update(String userId, User user) {
         log.info("Updating user with ID: {}", userId);
         try {
-            User existingUser = userRepository.findById(userId)
+            var existingUser = userRepository.findById(userId)
                     .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
             log.info("Existing user before update: {}", existingUser);
             userMapper.toUser(existingUser, user);
@@ -67,5 +71,16 @@ public class UserServiceImpl implements UserService {
         log.info("Deleting user with ID: {}", userId);
         userRepository.deleteById(userId);
         log.info("User with ID: {} deleted successfully", userId);
+    }
+
+    private void sendCommunication(User user) {
+        var createUserMessageDto = new CreateUserMessageDto(
+                user.getFirstName(),
+                user.getLastName(),
+                user.getPhone(),
+                user.getEmail());
+        log.info("Sending communication for the details: {}", createUserMessageDto);
+        boolean result = streamBridge.send("sendCommunication-out-0", createUserMessageDto);
+        log.info("Is the communication request is successfully processed? : {}", result);
     }
 }
