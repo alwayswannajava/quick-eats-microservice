@@ -63,6 +63,9 @@ public class User {
     @Field(name = "phone_verified")
     private Boolean phoneVerified;
 
+    @Field(name = "communication_switch")
+    private Boolean communicationSwitch;
+
     @Field(name = "last_login")
     private LocalDateTime lastLogin;
 
