@@ -75,7 +75,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updateCommunicationStatus(CreateUserMessageDto createUserMessageDto) {
-        return true;
+        boolean isUpdated = false;
+        if (createUserMessageDto != null) {
+            User user = userRepository.findByPhone(createUserMessageDto.phone())
+                    .orElseThrow(() -> new UserNotFoundException("User not found with phone: " + createUserMessageDto.phone()));
+            user.setCommunicationSwitch(true);
+            userRepository.save(user);
+            isUpdated = true;
+        }
+        return isUpdated;
     }
 
     private void sendCommunication(User user) {
