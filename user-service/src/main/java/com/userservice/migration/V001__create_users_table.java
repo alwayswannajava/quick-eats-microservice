@@ -29,6 +29,7 @@ public class V001__create_users_table {
                         JsonSchemaProperty.string("status").possibleValues("ACTIVE", "INACTIVE", "BANNED"),
                         JsonSchemaProperty.bool("email_verified"),
                         JsonSchemaProperty.bool("phone_verified"),
+                        JsonSchemaProperty.bool("communication_switch"),
                         JsonSchemaProperty.date("created_at"),
                         JsonSchemaProperty.string("created_by"),
                         JsonSchemaProperty.date("updated_at"),
