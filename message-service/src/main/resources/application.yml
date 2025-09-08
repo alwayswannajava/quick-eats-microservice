@@ -14,3 +14,6 @@ spring:
           group: ${spring.application.name}
         email-out-0:
           destination: communication-sent
+      kafka:
+        binder:
+          brokers: localhost:9092
