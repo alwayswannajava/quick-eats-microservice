@@ -1,4 +1,27 @@
 services:
+  kafka:
+    image: apache/kafka:latest
+    container_name: kafka
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_NUM_PARTITIONS: 3
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
   rabbit:
     image: rabbitmq:4.0-management
     hostname: rabbitmq
@@ -337,8 +360,6 @@ services:
   order-service:
     image: "mykhailokornukh/order-service:latest"
     container_name: order-service
-    ports:
-      - "8083:8083"
     healthcheck:
       test: "curl --fail --silent localhost:8083/actuator/health/readiness | grep UP || exit 1"
       interval: 20s
@@ -365,8 +386,6 @@ services:
   restaurant-service:
     image: "mykhailokornukh/restaurant-service:latest"
     container_name: restaurant-service
-    ports:
-      - "8082:8082"
     healthcheck:
       test: "curl --fail --silent localhost:8082/actuator/health/readiness | grep UP || exit 1"
       interval: 20s
@@ -393,8 +412,6 @@ services:
   user-service:
     image: "mykhailokornukh/user-service:latest"
     container_name: user-service
-    ports:
-      - "8081:8081"
     healthcheck:
       test: "curl --fail --silent localhost:8081/actuator/health/readiness | grep UP || exit 1"
       interval: 20s
@@ -407,6 +424,7 @@ services:
       SPRING_APPLICATION_NAME: "user-service"
       SPRING_DATASOURCE_URL: $MONGO_USERS_DB_URL
       OTEL_SERVICE_NAME: "user-service"
+      SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: "kafka:9092"
     depends_on:
       user-service-db:
         condition: service_healthy
@@ -426,6 +444,7 @@ services:
         condition: service_healthy
     environment:
       SPRING_RABBITMQ_HOST: "rabbit"
+      SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: "kafka:9092"
     extends:
       file: common-config.yml
       service: network-deploy-service
